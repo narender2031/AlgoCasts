@@ -9,11 +9,20 @@
 //   fib(4) === 3
 
 function fib(n) {
-  const result = [0, 1];
-  for (let i = 2; i <= n; i++) {
-    result.push(result[i - 1] + result[i - 2]);
+  // Only the previous two values are ever needed, so track them in two
+  // rolling variables instead of allocating an O(n) array. This keeps the
+  // function O(n) time but O(1) space.
+  if (n < 2) {
+    return n;
   }
-  return result[n];
+  let prev = 0;
+  let curr = 1;
+  for (let i = 2; i <= n; i++) {
+    const next = prev + curr;
+    prev = curr;
+    curr = next;
+  }
+  return curr;
 }
 
 module.exports = fib;
